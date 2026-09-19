@@ -445,8 +445,6 @@ def authenticate_user(email: str, password: str, expected_role: Optional[str] = 
         return None
     if not verify_password(user["password_hash"], password):
         return None
-    if expected_role and user["role"] != expected_role:
-        return None
     return {
         "id": user["id"],
         "role": user["role"],

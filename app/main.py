@@ -150,12 +150,12 @@ def auth_login(req: LoginRequest, request: Request):
     
     check_login_rate_limit(rate_limit_key)
 
-    user = authenticate_user(req.email, req.password, expected_role=req.role)
+    user = authenticate_user(req.email, req.password)
     if not user:
         record_failed_login(rate_limit_key)
         raise HTTPException(
             status_code=401,
-            detail="Invalid credentials. Please verify your email, password, and portal role."
+            detail="Invalid email or password. Please verify your credentials."
         )
     
     record_successful_login(rate_limit_key)
