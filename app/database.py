@@ -3,11 +3,13 @@ import json
 import hashlib
 import hmac
 import secrets
+from pathlib import Path
 from datetime import datetime
 from typing import Dict, Any, List, Optional
 from app.config import settings
 
 def get_db_connection() -> sqlite3.Connection:
+    Path(settings.DB_PATH).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(settings.DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
