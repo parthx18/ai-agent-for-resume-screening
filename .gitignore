@@ -1,0 +1,85 @@
+# =========================================================
+# Credentials, Environment Variables & Secrets
+# =========================================================
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+!.env.example
+
+# =========================================================
+# Local Databases & Storage
+# =========================================================
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+talentai.db
+recruitment.db
+data/
+*.sql
+
+# =========================================================
+# Uploads & Private Candidate Records
+# =========================================================
+uploads/
+records/
+*.xlsx
+*.csv
+!sample_resumes/
+
+# =========================================================
+# Scratch & Temporary Testing Scripts
+# =========================================================
+scratch_*.py
+scratch/
+temp/
+tmp/
+
+# =========================================================
+# Python Caches & Virtual Environments
+# =========================================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+venv/
+.venv/
+env/
+ENV/
+
+# =========================================================
+# Test Reports & Coverage
+# =========================================================
+.pytest_cache/
+.coverage
+htmlcov/
+
+# =========================================================
+# IDE & System Files
+# =========================================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log

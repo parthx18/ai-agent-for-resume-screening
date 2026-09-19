@@ -1,0 +1,30 @@
+SARAH CHEN
+Lead AI Systems Architect & Senior Python Engineer
+Email: sarah.chen@example.com | Phone: +1 (555) 234-5678 | San Francisco, CA
+GitHub: github.com/sarahchen-ai | LinkedIn: linkedin.com/in/sarahchen-ai
+
+PROFESSIONAL SUMMARY
+Dynamic Senior AI & Backend Architect with over 6 years of experience engineering production-grade agentic AI systems, scalable FastAPI microservices, and LLM-driven autonomous workflows. Proven track record deploying complex LangChain and LlamaIndex agents with Docker and Kubernetes in high-throughput environments.
+
+CORE COMPETENCIES & TECHNICAL SKILLS
+• Programming: Python, TypeScript, SQL, Bash
+• AI & LLM Systems: LLMs (Gemini, GPT-4, Claude), LangChain, LlamaIndex, Prompt Engineering, RAG Pipelines, Vector Databases (ChromaDB, Pinecone)
+• Frameworks & Backend: FastAPI, Asynchronous Python, REST APIs, GraphQL, Pydantic
+• DevOps & Infrastructure: Docker, Kubernetes, CI/CD, Git, AWS (ECS, Lambda, S3)
+• Databases: PostgreSQL, Redis, SQLite
+
+PROFESSIONAL EXPERIENCE
+
+Principal AI Engineer | CogniTech AI (2022 - Present)
+• Spearheaded the design and deployment of an autonomous agent framework handling 1.5M monthly queries.
+• Built high-performance asynchronous REST APIs using FastAPI and Python, reducing latency by 42%.
+• Containerized multi-agent microservices with Docker and managed deployment pipelines using Git and GitHub Actions.
+• Implemented advanced RAG architectures with LangChain and vector databases, boosting retrieval precision by 35%.
+
+Senior Backend Engineer | DataSphere Systems (2019 - 2022)
+• Developed scalable backend services in Python and FastAPI for enterprise data analytics.
+• Mentored junior engineers in asynchronous Python design patterns, testing with Pytest, and Docker best practices.
+• Designed database schemas and optimized complex queries on PostgreSQL.
+
+EDUCATION
+B.S. in Computer Science | University of California, Berkeley (2015 - 2019)

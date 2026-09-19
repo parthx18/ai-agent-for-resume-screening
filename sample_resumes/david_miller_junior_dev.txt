@@ -1,0 +1,26 @@
+DAVID MILLER
+Junior Web Developer
+Email: david.miller@example.com | Phone: +1 (555) 456-7890
+Location: Austin, TX | Portfolio: davidmiller-dev.com
+
+SUMMARY
+Passionate recent graduate with 1 year of experience building frontend web applications and basic backend scripts. Eager to expand skills into machine learning and full-stack development.
+
+SKILLS
+• Languages: HTML, CSS, JavaScript, Basic Python
+• Web Frameworks: React, Express.js
+• Tools: Git, VS Code, Figma
+• Databases: MongoDB
+
+EXPERIENCE
+Junior Web Developer | PixelCraft Studio (2024 - Present)
+• Built responsive landing pages using HTML5, CSS3, and JavaScript.
+• Wrote basic Python utility scripts for data formatting and text cleanup.
+• Used Git for version control and collaborated with UI designers.
+
+Web Development Intern | Austin Tech Hub (Summer 2023)
+• Assisted in debugging React UI components.
+• Maintained documentation and wrote unit tests for web forms.
+
+EDUCATION
+B.A. in Digital Media Arts | Texas State University (2020 - 2024)
