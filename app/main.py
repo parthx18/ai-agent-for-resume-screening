@@ -32,22 +32,6 @@ app = FastAPI(
     description="Dual-Portal AI Resume Screening Agent with Live Excel Synchronization and Automated Notifications"
 )
 
-# Vercel Rewrite Compatibility Middleware
-# Handles recent Vercel changes where internal rewrites forward the destination path (e.g. /api/index.py)
-@app.middleware("http")
-async def handle_vercel_rewrites(request: Request, call_next):
-    matched_path = request.headers.get("x-matched-path") or request.headers.get("x-invoke-path")
-    if matched_path:
-        request.scope["path"] = matched_path.split("?")[0]
-    else:
-        path = request.scope.get("path", "")
-        if path.startswith("/api/index.py"):
-            cleaned = path.replace("/api/index.py", "", 1)
-            request.scope["path"] = cleaned if cleaned else "/"
-        elif path.startswith("/api/index"):
-            cleaned = path.replace("/api/index", "", 1)
-            request.scope["path"] = cleaned if cleaned else "/"
-    return await call_next(request)
 
 # Security Headers Middleware
 @app.middleware("http")
@@ -502,8 +486,6 @@ if STATIC_DIR.exists():
         app.mount("/js", StaticFiles(directory=str(JS_DIR)), name="js")
 
 @app.get("/")
-@app.get("/api/index.py")
-@app.get("/api/index")
 def serve_index():
     index_file = STATIC_DIR / "index.html"
     if index_file.exists():
