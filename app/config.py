@@ -3,14 +3,25 @@ from pathlib import Path
 from pydantic_settings import BaseSettings
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-DATA_DIR = BASE_DIR / "data"
-RECORDS_DIR = BASE_DIR / "records"
-UPLOADS_DIR = BASE_DIR / "uploads"
 
-# Ensure runtime directories exist
-DATA_DIR.mkdir(exist_ok=True)
-RECORDS_DIR.mkdir(exist_ok=True)
-UPLOADS_DIR.mkdir(exist_ok=True)
+# Detect Vercel / AWS Lambda serverless read-only filesystem environment
+IS_VERCEL = bool(os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME") or os.environ.get("NOW_REGION"))
+
+if IS_VERCEL:
+    DATA_DIR = Path("/tmp/data")
+    RECORDS_DIR = Path("/tmp/records")
+    UPLOADS_DIR = Path("/tmp/uploads")
+else:
+    DATA_DIR = BASE_DIR / "data"
+    RECORDS_DIR = BASE_DIR / "records"
+    UPLOADS_DIR = BASE_DIR / "uploads"
+
+# Safely ensure runtime directories exist
+for directory in (DATA_DIR, RECORDS_DIR, UPLOADS_DIR):
+    try:
+        directory.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
 
 class Settings(BaseSettings):
     APP_NAME: str = "AI Resume Screening Agent"

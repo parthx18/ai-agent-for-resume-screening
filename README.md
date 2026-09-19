@@ -20,6 +20,7 @@
 - [Dual Role-Based Portals](#-dual-role-based-portals)
 - [AI Screening Engine & Providers](#-ai-screening-engine--providers)
 - [Quick Start Guide](#-quick-start-guide)
+- [Deploying on Vercel](#-deploying-on-vercel)
 - [Environment Configuration](#-environment-configuration)
 - [Step-by-Step Testing Walkthrough](#-step-by-step-testing-walkthrough)
 - [REST API Reference](#-rest-api-reference)
@@ -153,6 +154,38 @@ Open your browser and navigate to:
 
 ---
 
+## ⚡ Deploying on Vercel
+
+TalentAI is pre-configured for instant **Serverless Deployment on Vercel** with zero configuration needed.
+
+### Method 1: Deploy via Vercel Dashboard (Recommended)
+
+1. Push your changes to GitHub.
+2. Go to [Vercel Dashboard](https://vercel.com/new).
+3. Click **Add New...** ➔ **Project**, and select `AI-Agent-for-Resume-Screening-`.
+4. Leave **Framework Preset** as **Other** (Vercel automatically detects the Python runtime via `api/index.py`).
+5. Under **Environment Variables**, add:
+   - `AI_PROVIDER`: `gemini`
+   - `GEMINI_API_KEY`: *(Your Google AI Studio API key)*
+   - `GEMINI_MODEL`: `gemini-2.5-flash`
+   - *(Optional)* `GROQ_API_KEY`: *(Your Groq Cloud API key)*
+   - *(Optional)* `ENABLE_REAL_EMAIL`: `False` (or configure SMTP credentials)
+6. Click **Deploy**. Vercel will build and assign you a live HTTPS production URL (e.g., `https://ai-agent-for-resume-screening.vercel.app`).
+
+### Method 2: Deploy via Vercel CLI
+
+```bash
+# 1. Install or run Vercel CLI
+npx vercel
+
+# 2. Follow prompts and deploy to production
+npx vercel --prod
+```
+
+> **Serverless Filesystem Note**: On Vercel, the root filesystem is read-only. TalentAI automatically detects the Vercel serverless environment and redirects runtime directories (`data/`, `records/`, `uploads/`) to `/tmp`, allowing dynamic SQLite operations, resume uploads, and Excel generation to execute seamlessly.
+
+---
+
 ## ⚙️ Environment Configuration
 
 Create a `.env` file in the root directory by copying the provided `.env.example`:
@@ -256,6 +289,8 @@ The test runner validates:
 
 ```
 AI-Agent-for-Resume-Screening/
+├── api/
+│   └── index.py                  # Vercel Serverless Function entry point
 ├── app/
 │   ├── config.py                 # Application settings, directories & environment variables
 │   ├── database.py               # SQLite database models, schemas, and password utilities
@@ -280,6 +315,7 @@ AI-Agent-for-Resume-Screening/
 ├── .gitignore                    # Hardened Git ignore rules protecting private data
 ├── requirements.txt              # Production Python package dependencies
 ├── run.py                        # Entry-point web server launcher (Uvicorn)
+├── vercel.json                   # Vercel serverless deployment configuration
 └── README.md                     # Comprehensive project documentation
 ```
 

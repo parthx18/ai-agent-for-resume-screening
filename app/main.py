@@ -42,7 +42,7 @@ async def add_security_headers(request: Request, call_next):
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
     return response
 
-# CORS Middleware (restricted to local web origins)
+# CORS Middleware (supports local development and Vercel domains)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
@@ -51,8 +51,9 @@ app.add_middleware(
         "http://localhost:3000",
         "http://127.0.0.1:3000"
     ],
+    allow_origin_regex=r"^https?:\/\/.*\.vercel\.app$|^https?:\/\/localhost(:\d+)?$|^https?:\/\/127\.0\.0\.1(:\d+)?$",
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
 
@@ -465,9 +466,24 @@ def update_settings(payload: SettingsUpdateRequest):
 
 # Mount static web directory
 STATIC_DIR = settings.BASE_DIR / "static"
-STATIC_DIR.mkdir(exist_ok=True)
-app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+if not STATIC_DIR.exists():
+    try:
+        STATIC_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+
+if STATIC_DIR.exists():
+    app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
 
 @app.get("/")
 def serve_index():
-    return FileResponse(str(STATIC_DIR / "index.html"))
+    index_file = STATIC_DIR / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return JSONResponse({
+        "status": "online",
+        "service": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "docs": "/docs"
+    })
+
