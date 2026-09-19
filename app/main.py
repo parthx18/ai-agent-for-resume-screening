@@ -33,6 +33,17 @@ app = FastAPI(
 )
 
 
+# Vercel Serverless Path Normalization Middleware
+# If Vercel rewrites forward requests with a target destination or __url param, normalize scope['path']
+@app.middleware("http")
+async def normalize_vercel_path(request: Request, call_next):
+    url_override = request.query_params.get("__url")
+    if url_override:
+        request.scope["path"] = url_override.split("?")[0]
+    elif request.scope.get("path") in ("/api/index.py", "/api/index", "/api/index.py/"):
+        request.scope["path"] = "/api"
+    return await call_next(request)
+
 # Security Headers Middleware
 @app.middleware("http")
 async def add_security_headers(request: Request, call_next):
@@ -485,8 +496,21 @@ if STATIC_DIR.exists():
     if JS_DIR.exists():
         app.mount("/js", StaticFiles(directory=str(JS_DIR)), name="js")
 
+@app.get("/api")
+@app.get("/api/")
+def api_status():
+    return {
+        "status": "online",
+        "service": settings.APP_NAME,
+        "version": settings.APP_VERSION,
+        "docs": "/docs"
+    }
+
 @app.get("/")
 def serve_index():
+    public_index = settings.BASE_DIR / "public" / "index.html"
+    if public_index.exists():
+        return FileResponse(str(public_index))
     index_file = STATIC_DIR / "index.html"
     if index_file.exists():
         return FileResponse(str(index_file))
