@@ -2,14 +2,23 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "functions": {
     "api/index.py": {
-      "includeFiles": "static/**",
+      "includeFiles": "../static/**",
       "maxDuration": 30
     }
   },
   "rewrites": [
+    {
+      "source": "/css/:path*",
+      "destination": "/css/:path*"
+    },
+    {
+      "source": "/js/:path*",
+      "destination": "/js/:path*"
+    },
     {
       "source": "/(.*)",
       "destination": "/api/index.py"
     }
   ]
 }
+

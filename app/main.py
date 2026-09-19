@@ -490,7 +490,16 @@ if not STATIC_DIR.exists():
         pass
 
 if STATIC_DIR.exists():
+    # Keep /static mount for backward compatibility
     app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
+
+    # Mount /css and /js at root level so local dev works with new HTML paths
+    CSS_DIR = STATIC_DIR / "css"
+    JS_DIR = STATIC_DIR / "js"
+    if CSS_DIR.exists():
+        app.mount("/css", StaticFiles(directory=str(CSS_DIR)), name="css")
+    if JS_DIR.exists():
+        app.mount("/js", StaticFiles(directory=str(JS_DIR)), name="js")
 
 @app.get("/")
 @app.get("/api/index.py")
