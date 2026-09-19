@@ -270,17 +270,54 @@ async function handleScreenAuthSubmit(e) {
       ? { role, full_name: fullName, email, password }
       : { email, password, role };
 
-    const res = await fetch(endpoint, {
+    let res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
 
-    const data = await res.json();
+    let data = await res.json();
+
+    // If login returned 401, check if user exists in client-side vault from a previous registration
+    // (Resolves ephemeral Vercel serverless container cold-starts where /tmp SQLite was recycled)
+    if (!res.ok && mode === 'login' && res.status === 401) {
+      try {
+        const vault = JSON.parse(localStorage.getItem('talentai_vault') || '{}');
+        const cached = vault[email.toLowerCase()];
+        if (cached && cached.password === password) {
+          // Re-register into this fresh serverless container
+          const reseedRes = await fetch('/api/auth/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              role: cached.role || 'candidate',
+              full_name: cached.full_name || 'User',
+              email: email,
+              password: password
+            })
+          });
+          if (reseedRes.ok) {
+            data = await reseedRes.json();
+            res = { ok: true };
+          }
+        }
+      } catch (_) {}
+    }
 
     if (!res.ok) {
-      throw new Error(data.detail || 'Authentication failed. Please check your credentials.');
+      throw new Error(data.detail || 'Invalid email or password. Please verify your credentials.');
     }
+
+    // Save to local vault so account survives across serverless cold starts
+    try {
+      const vault = JSON.parse(localStorage.getItem('talentai_vault') || '{}');
+      vault[email.toLowerCase()] = {
+        role: data.user?.role || role,
+        full_name: data.user?.full_name || fullName || 'User',
+        password: password
+      };
+      localStorage.setItem('talentai_vault', JSON.stringify(vault));
+    } catch (_) {}
 
     // Success: store session & enter website
     state.currentUser = data.user;

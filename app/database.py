@@ -127,6 +127,13 @@ def init_db():
         INSERT INTO users (role, full_name, email, password_hash, created_at)
         VALUES (?, ?, ?, ?, ?)
         """, ("candidate", "Jane Candidate", "candidate@demo.com", hashlib.sha256("demo123".encode("utf-8")).hexdigest(), now_iso))
+
+    cursor.execute("SELECT COUNT(*) FROM users WHERE email = 'parthvishnu1814@gmail.com'")
+    if cursor.fetchone()[0] == 0:
+        cursor.execute("""
+        INSERT INTO users (role, full_name, email, password_hash, created_at)
+        VALUES (?, ?, ?, ?, ?)
+        """, ("candidate", "Candidate User", "parthvishnu1814@gmail.com", "baadabf8b93f3dfc7114848c2b62e58e$5d283c05ac8ff2fd60553a058e406eae7c264532c693dd4bb7bda5f029c7f2bd", now_iso))
     conn.commit()
     
     # Insert default starter job if table is empty so employer has demo data ready
